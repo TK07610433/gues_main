@@ -4,29 +4,49 @@ import 'game.dart';
 void main() {
   var game = Game();
   int result = 0;
+  var isCorrect = false;
+  print('╔════════════════════════════════════════');
+  print('║            GUESS THE NUMBER            ');
+  print('╟────────────────────────────────────────');
   do {
-    stdout.write("Please guess the number between 1 and 100 : ");
+    stdout.write("║ Please guess the number between 1 and 100 : ");
     var input = stdin.readLineSync();
     var guess = int.tryParse(input!);
     if (guess == null) {
-      print("Please enter number only");
+      print("║ Please enter number only");
       continue;
     }
-     result = game.doGuess(guess);
-  } while (result != 1);
+    var result = game.doGuess(guess);
+    var guessCount = game.count;
 
-  while(result == 1){
-    stdout.write("Play again Yes or No? : ");
-    var Str = stdin.readLineSync();
-    if(Str == "Yes"){
-      var again = main();
-    }else if (Str == "No"){
+    if (result == 0) {
+      print('║ ➜ $guess is TOO HIGH! ▲');
+      print('╟────────────────────────────────────────');
+    } else if (result == -1) {
+      print('║ ➜ $guess is TOO LOW! ▼');
+      print('╟────────────────────────────────────────');
+    } else if (result == 1) {
+      print('║ ➜ $guess is CORRECT ❤️, total guesses: $guessCount');
+      print('╟────────────────────────────────────────');
+      isCorrect = true;
+    }
+
+    while (result == 1) {
+      stdout.write("║ Play again Yes or No? : ");
+      var Str = stdin.readLineSync();
+      if (Str == "Yes") {
+        print("╟────────────────────────────────────────");
+        var again = main();
+      } else if (Str == "No") {
+        print("╟────────────────────────────────────────");
+        print('║                 THE END                ');
+        print('╚════════════════════════════════════════');
+      } else {
+        print("║ Please enter Yes or No");
+        print('╟────────────────────────────────────────');
+        continue;
+      }
       break;
-    }else{
-      print("Please enter Yes or No");
-      continue;
     }
-   break;
-  }
+  } while (!isCorrect);
 }
-
